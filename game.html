@@ -1,364 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Tela do jogo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Estacionamento</title>
 
-<style>
-/* -----------------------------------------------------------
-   RESET / BASE
------------------------------------------------------------ */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9e9e9;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
 
-html, body {
-    height: 100%;
-}
+        h1 {
+            margin-bottom: 10px;
+        }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #2e2e2e;
-    overflow: hidden;
-}
+        /* Botão */
+        #startBtn {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
 
-/* -----------------------------------------------------------
-   ÁREA PRINCIPAL DO JOGO
------------------------------------------------------------ */
-#area-jogo {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(180deg, #4a5568 0%, #2d3748 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        /* Texto com borda de fundo */
+        #instructions {
+            background: white;
+            border: 2px solid black;
+            padding: 10px;
+            width: 400px;
+            margin: 0 auto 20px auto;
+            font-weight: bold;
+        }
 
-.centro {
-    width: min(1100px, 95%);
-    max-width: 1100px;
-    height: 85%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    position: relative;
-}
+        /* Área do jogo */
+        #gameArea {
+            width: 800px;
+            height: 500px;
+            background: #ccc;
+            margin: 0 auto;
+            position: relative;
+            border: 4px solid #444;
+        }
 
-/* -----------------------------------------------------------
-   RUA
------------------------------------------------------------ */
-.rua {
-    width: 100%;
-    height: 160px;
-    background: linear-gradient(180deg, #1f2937, #111827);
-    border-radius: 12px;
-    box-shadow: inset 0 8px 30px rgba(0,0,0,0.5);
-}
+        /* Carro */
+        #car {
+            width: 40px;
+            height: 70px;
+            background: red;
+            position: absolute;
+            top: 400px;
+            left: 380px;
+            border-radius: 5px;
+        }
 
-/* -----------------------------------------------------------
-   GRID DAS VAGAS
------------------------------------------------------------ */
-.vagas-grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 28px 20px;
-    justify-items: center;
-    padding: 12px 6px;
-}
+        /* Colunas de estacionamento */
+        .parking-row {
+            position: absolute;
+            display: grid;
+            gap: 10px;
+        }
 
-.vaga {
-    width: 120px;
-    height: 200px;
-    background-color: #74e374;
-    border: 5px solid #ffffff;
-    border-top: none;
-    border-radius: 4px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    transition: background-color 0.3s, transform 0.15s;
-    position: relative;
-}
+        /* Vagas */
+        .parking-slot {
+            width: 80px;
+            height: 120px;
+            background: lightgreen;
+            border: 2px solid #333;
+        }
 
-.vaga p {
-    margin-top: 8px;
-    font-size: 22px;
-    font-weight: bold;
-    color: #000;
-    user-select: none;
-}
+        /* Vagas do lado esquerdo */
+        .left {
+            left: 60px;
+            top: 30px;
+        }
 
-.vaga.ocupada {
-    background-color: #ff6b6b;
-}
-
-.vaga::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 8px;
-    right: 8px;
-    height: 3px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 2px;
-}
-
-/* -----------------------------------------------------------
-   CARROS
------------------------------------------------------------ */
-.carros-container {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-
-.carro {
-    width: 80px;
-    height: 120px;
-    border-radius: 8px;
-    position: absolute;
-    transition: transform 0.1s linear;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    pointer-events: auto;
-}
-
-.carro.ativo {
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
-    border: 3px solid #fbbf24;
-}
-
-/* detalhes */
-.vidro-frente, .vidro-tras {
-    position: absolute;
-    left: 10px;
-    right: 10px;
-    height: 35px;
-    background: rgba(135,206,235,0.5);
-    border-radius: 5px;
-    border: 1px solid rgba(0,0,0,0.2);
-}
-
-.vidro-frente { top: 10px; }
-.vidro-tras { bottom: 10px; }
-
-.farois, .lanternas {
-    position: absolute;
-    left: 0; right: 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 12px;
-}
-
-.farois { top: 3px; }
-.lanternas { bottom: 3px; }
-
-.farol {
-    width: 10px;
-    height: 5px;
-    background: #fbbf24;
-    border-radius: 2px;
-}
-
-.lanterna {
-    width: 10px;
-    height: 5px;
-    background: #dc2626;
-    border-radius: 2px;
-}
-
-/* cores */
-.carro1 { background: #1e40af; }
-.carro2 { background: #eab308; }
-.carro3 { background: #dc2626; }
-.carro4 { background: #16a34a; }
-.carro5 { background: #9333ea; }
-
-/* -----------------------------------------------------------
-   BOTÃO DE SAÍDA
------------------------------------------------------------ */
-button {
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    padding: 10px 18px;
-    background-color: #000523;
-    color: yellow;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 4px #999;
-    z-index: 1200;
-}
-
-button:hover {
-    background-color: #444;
-}
-
-button:active {
-    box-shadow: 0 2px #666;
-    transform: translateY(2px);
-}
-
-/* -----------------------------------------------------------
-   INSTRUÇÕES
------------------------------------------------------------ */
-.instrucoes {
-    position: fixed;
-    top: 18px;
-    left: 18px;
-    background: white;
-    padding: 12px;
-    border-radius: 10px;
-    border: 3px solid #fbbf24;
-    z-index: 1200;
-}
-
-.instrucoes h3 {
-    margin-bottom: 6px;
-    color: #1e40af;
-}
-
-.instrucoes p {
-    font-size: 13px;
-    color: #374151;
-}
-
-/* -----------------------------------------------------------
-   RESPONSIVIDADE
------------------------------------------------------------ */
-@media (max-width: 1100px) {
-    .vaga { width: 100px; height: 180px; }
-    .carro { width: 72px; height: 110px; }
-}
-
-@media (max-width: 900px) {
-    .vagas-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
-        padding: 8px;
-    }
-
-    .vaga {
-        width: 42vw;
-        height: 62vw;
-    }
-
-    .carro {
-        width: 28vw;
-        height: 40vw;
-    }
-
-    .rua {
-        height: 100px;
-    }
-
-    .instrucoes {
-        width: 70%;
-        left: 10px;
-    }
-
-    button {
-        top: 10px;
-        right: 10px;
-        padding: 8px 12px;
-    }
-}
-
-@media (max-width: 500px) {
-    .vaga {
-        width: 60vw;
-        height: 85vw;
-    }
-
-    .carro {
-        width: 38vw;
-        height: 52vw;
-    }
-
-    .instrucoes {
-        width: 84%;
-        left: 8px;
-        top: 8px;
-    }
-}
-</style>
+        /* Vagas do lado direito */
+        .right {
+            right: 60px;
+            top: 30px;
+            transform: rotate(180deg);
+        }
+    </style>
 </head>
-
 <body>
 
-<button id="saida" onclick="window.location.href='index.html'">Sair do jogo</button>
+    <h1>Desafio do Estacionamento</h1>
 
-<div class="instrucoes">
-    <h3>Instruções</h3>
-    <p>Use as setas do teclado para mover o carro ativo. Estacione na vaga correta.</p>
-</div>
+    <button id="startBtn" onclick="startGame()">Iniciar Jogo</button>
 
-<div id="area-jogo">
-    <div class="centro">
+    <p id="instructions">
+        Use as setas do teclado para mover o carro e estacione em uma vaga verde.
+    </p>
 
-        <div class="vagas-grid" id="vagas-grid">
-            <div class="vaga" data-vaga="1"><p>1</p></div>
-            <div class="vaga" data-vaga="2"><p>2</p></div>
-            <div class="vaga" data-vaga="3"><p>3</p></div>
-            <div class="vaga" data-vaga="4"><p>4</p></div>
-            <div class="vaga" data-vaga="5"><p>5</p></div>
+    <div id="gameArea">
+        <div id="car"></div>
 
-            <div class="vaga" data-vaga="6"><p>6</p></div>
-            <div class="vaga" data-vaga="7"><p>7</p></div>
-            <div class="vaga" data-vaga="8"><p>8</p></div>
-            <div class="vaga" data-vaga="9"><p>9</p></div>
-            <div class="vaga" data-vaga="10"><p>10</p></div>
+        <div class="parking-row left">
+            <div class="parking-slot"></div>
+            <div class="parking-slot"></div>
+            <div class="parking-slot"></div>
+            <div class="parking-slot"></div>
+            <div class="parking-slot"></div>
         </div>
 
-        <div class="rua"></div>
-
-        <div class="carros-container" id="carros-container">
-            <div class="carro carro1 ativo" id="carro1" style="left: calc(50% - 40px); top: 60%;">
-                <div class="vidro-frente"></div>
-                <div class="vidro-tras"></div>
-                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-            </div>
-
-            <div class="carro carro2" id="carro2" style="left: calc(50% - 140px); top: 68%;">
-                <div class="vidro-frente"></div>
-                <div class="vidro-tras"></div>
-                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-            </div>
-
-            <div class="carro carro3" id="carro3" style="left: calc(50% + 60px); top: 68%;">
-                <div class="vidro-frente"></div>
-                <div class="vidro-tras"></div>
-                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-            </div>
-
-            <div class="carro carro4" id="carro4" style="left: calc(50% - 240px); top: 76%;">
-                <div class="vidro-frente"></div>
-                <div class="vidro-tras"></div>
-                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-            </div>
-
-            <div class="carro carro5" id="carro5" style="left: calc(50% + 160px); top: 76%;">
-                <div class="vidro-frente"></div>
-                <div class="vidro-tras"></div>
-                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-            </div>
+        <div class="parking-row right">
+            <div class="parking-slot"></div>
+            <div class="parking-slot"></div>
+            <div class="parking-slot"></div>
+            <div class="parking-slot"></div>
+            <div class="parking-slot"></div>
         </div>
-
     </div>
-</div>
 
-<script src="game.js"></script>
+    <script>
+        let car = null;
+
+        function startGame() {
+            car = document.getElementById("car");
+            document.addEventListener("keydown", moveCar);
+        }
+
+        function moveCar(e) {
+            const step = 10;
+            const rect = car.getBoundingClientRect();
+            const game = document.getElementById("gameArea").getBoundingClientRect();
+
+            if (e.key === "ArrowUp" && rect.top > game.top) {
+                car.style.top = (car.offsetTop - step) + "px";
+            }
+            if (e.key === "ArrowDown" && rect.bottom < game.bottom) {
+                car.style.top = (car.offsetTop + step) + "px";
+            }
+            if (e.key === "ArrowLeft" && rect.left > game.left) {
+                car.style.left = (car.offsetLeft - step) + "px";
+            }
+            if (e.key === "ArrowRight" && rect.right < game.right) {
+                car.style.left = (car.offsetLeft + step) + "px";
+            }
+        }
+    </script>
+
 </body>
 </html>
