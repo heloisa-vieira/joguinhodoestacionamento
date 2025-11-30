@@ -6,294 +6,359 @@
 <title>Tela do jogo</title>
 
 <style>
-    /* reset mínimo */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+/* -----------------------------------------------------------
+   RESET / BASE
+----------------------------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    html, body {
-        height: 100%;
-    }
+html, body {
+    height: 100%;
+}
 
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #2e2e2e;
-        overflow: hidden;
-    }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2e2e2e;
+    overflow: hidden;
+}
 
-    /* ÁREA PRINCIPAL do jogo (full-screen) */
-    #area-jogo {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-        background: linear-gradient(180deg, #4a5568 0%, #2d3748 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+/* -----------------------------------------------------------
+   ÁREA PRINCIPAL DO JOGO
+----------------------------------------------------------- */
+#area-jogo {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(180deg, #4a5568 0%, #2d3748 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    /* Container central que segura as vagas e a pista */
-    .centro {
-        width: min(1100px, 95%);
-        max-width: 1100px;
-        height: 85%; /* ocupa altura central */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 24px;
-        position: relative;
-    }
+.centro {
+    width: min(1100px, 95%);
+    max-width: 1100px;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+}
 
-    /* RUA (área entre fileiras das vagas) */
-    .rua {
-        width: 100%;
-        height: 1fr; /* espaço flexível */
-        flex: 0 0 160px;
-        background: linear-gradient(180deg, #1f2937, #111827);
-        border-radius: 12px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.5) inset;
-        position: relative;
-    }
+/* -----------------------------------------------------------
+   RUA
+----------------------------------------------------------- */
+.rua {
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(180deg, #1f2937, #111827);
+    border-radius: 12px;
+    box-shadow: inset 0 8px 30px rgba(0,0,0,0.5);
+}
 
-    /* GRID das vagas: duas fileiras (5 colunas) */
+/* -----------------------------------------------------------
+   GRID DAS VAGAS
+----------------------------------------------------------- */
+.vagas-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 28px 20px;
+    justify-items: center;
+    padding: 12px 6px;
+}
+
+.vaga {
+    width: 120px;
+    height: 200px;
+    background-color: #74e374;
+    border: 5px solid #ffffff;
+    border-top: none;
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    transition: background-color 0.3s, transform 0.15s;
+    position: relative;
+}
+
+.vaga p {
+    margin-top: 8px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+    user-select: none;
+}
+
+.vaga.ocupada {
+    background-color: #ff6b6b;
+}
+
+.vaga::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    right: 8px;
+    height: 3px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 2px;
+}
+
+/* -----------------------------------------------------------
+   CARROS
+----------------------------------------------------------- */
+.carros-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.carro {
+    width: 80px;
+    height: 120px;
+    border-radius: 8px;
+    position: absolute;
+    transition: transform 0.1s linear;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    pointer-events: auto;
+}
+
+.carro.ativo {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+    border: 3px solid #fbbf24;
+}
+
+/* detalhes */
+.vidro-frente, .vidro-tras {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    height: 35px;
+    background: rgba(135,206,235,0.5);
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+.vidro-frente { top: 10px; }
+.vidro-tras { bottom: 10px; }
+
+.farois, .lanternas {
+    position: absolute;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 12px;
+}
+
+.farois { top: 3px; }
+.lanternas { bottom: 3px; }
+
+.farol {
+    width: 10px;
+    height: 5px;
+    background: #fbbf24;
+    border-radius: 2px;
+}
+
+.lanterna {
+    width: 10px;
+    height: 5px;
+    background: #dc2626;
+    border-radius: 2px;
+}
+
+/* cores */
+.carro1 { background: #1e40af; }
+.carro2 { background: #eab308; }
+.carro3 { background: #dc2626; }
+.carro4 { background: #16a34a; }
+.carro5 { background: #9333ea; }
+
+/* -----------------------------------------------------------
+   BOTÃO DE SAÍDA
+----------------------------------------------------------- */
+button {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    padding: 10px 18px;
+    background-color: #000523;
+    color: yellow;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px #999;
+    z-index: 1200;
+}
+
+button:hover {
+    background-color: #444;
+}
+
+button:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
+}
+
+/* -----------------------------------------------------------
+   INSTRUÇÕES
+----------------------------------------------------------- */
+.instrucoes {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    border: 3px solid #fbbf24;
+    z-index: 1200;
+}
+
+.instrucoes h3 {
+    margin-bottom: 6px;
+    color: #1e40af;
+}
+
+.instrucoes p {
+    font-size: 13px;
+    color: #374151;
+}
+
+/* -----------------------------------------------------------
+   RESPONSIVIDADE
+----------------------------------------------------------- */
+@media (max-width: 1100px) {
+    .vaga { width: 100px; height: 180px; }
+    .carro { width: 72px; height: 110px; }
+}
+
+@media (max-width: 900px) {
     .vagas-grid {
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 28px 20px; /* gap: row column */
-        align-items: center;
-        justify-items: center;
-        padding: 12px 6px;
-        /* ocupam as áreas acima e abaixo da rua via posição relativa */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        padding: 8px;
     }
 
-    /* Cada vaga (mantive classe .vaga) */
     .vaga {
-        width: 120px;
-        height: 200px;
-        background-color: #74e374; /* verde = vaga livre */
-        border: 5px solid #ffffff;
-        border-top: none;
-        border-radius: 4px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        transition: background-color 0.3s, transform 0.15s;
-        position: relative;
-    }
-
-    /* número dentro da vaga */
-    .vaga p {
-        margin: 8px 0 0 0;
-        font-size: 22px;
-        font-weight: bold;
-        color: #000;
-        user-select: none;
-    }
-
-    .vaga.ocupada { background-color: #ff6b6b; }
-
-    /* linha interna da vaga (opcional visual) */
-    .vaga::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 8px;
-        right: 8px;
-        height: 3px;
-        background: rgba(255,255,255,0.9);
-        border-radius: 2px;
-    }
-
-    /* Carros — coloquei no topo da pilha com z-index para podermos mover */
-    .carros-container {
-        position: absolute;
-        inset: 0; /* ocupa toda a área central */
-        pointer-events: none; /* evita bloquear cliques nas vagas; o JS pode ativar pointer-events quando preciso */
+        width: 42vw;
+        height: 62vw;
     }
 
     .carro {
-        width: 80px;
-        height: 120px;
-        border-radius: 8px;
-        position: absolute;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        transition: transform 0.1s linear;
-        pointer-events: auto; /* carros podem receber eventos */
+        width: 28vw;
+        height: 40vw;
     }
 
-    .carro.ativo {
-        box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
-        border: 3px solid #fbbf24;
+    .rua {
+        height: 100px;
     }
 
-    /* detalhes do carro (vidros, faróis, lanternas) */
-    .vidro-frente {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        height: 35px;
-        background: rgba(135, 206, 235, 0.5);
-        border-radius: 5px;
-        border: 1px solid rgba(0,0,0,0.2);
-    }
-    .vidro-tras {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        height: 35px;
-        background: rgba(135, 206, 235, 0.5);
-        border-radius: 5px;
-        border: 1px solid rgba(0,0,0,0.2);
-    }
-    .farois { position: absolute; top: 3px; left: 0; right: 0; display:flex; justify-content: space-between; padding: 0 12px; }
-    .farol { width: 10px; height: 5px; background: #fbbf24; border-radius: 2px; }
-    .lanternas { position: absolute; bottom: 3px; left: 0; right: 0; display:flex; justify-content: space-between; padding: 0 12px; }
-    .lanterna { width: 10px; height: 5px; background: #dc2626; border-radius: 2px; }
-
-    /* cores diferentes */
-    .carro1 { background: #1e40af; }
-    .carro2 { background: #eab308; }
-    .carro3 { background: #dc2626; }
-    .carro4 { background: #16a34a; }
-    .carro5 { background: #9333ea; }
-
-    /* Botão de saída */
-    button {
-        position: fixed;
-        top: 18px;
-        right: 18px;
-        padding: 10px 18px;
-        font-size: 15px;
-        background-color: #000523;
-        color: yellow;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        box-shadow: 0 4px #999;
-        z-index: 1200;
-    }
-    button:hover { background-color: #444; }
-    button:active { box-shadow: 0 2px #666; transform: translateY(2px); }
-
-    /* Painel de instruções */
     .instrucoes {
-        position: fixed;
-        top: 18px;
-        left: 18px;
-        background: white;
-        padding: 12px;
-        border-radius: 10px;
-        border: 3px solid #fbbf24;
-        z-index: 1200;
-    }
-    .instrucoes h3 { margin: 0 0 8px 0; color: #1e40af; }
-    .instrucoes p { margin: 2px 0; font-size: 13px; color: #374151; }
-
-    /* -------------- RESPONSIVIDADE -------------- */
-    @media (max-width: 1100px) {
-        .vaga { width: 100px; height: 180px; }
-        .carro { width: 72px; height: 110px; }
-        .centro { gap: 18px; }
+        width: 70%;
+        left: 10px;
     }
 
-    @media (max-width: 900px) {
-        /* Grid vira 2 colunas para caber no celular - mantendo ordem 1..10 */
-        .vagas-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-            padding: 8px;
-        }
-        .vaga { width: 42vw; height: 62vw; } /* uso vw para manter proporção */
-        .carro { width: 28vw; height: 40vw; }
-        .rua { flex: 0 0 100px; }
-        .instrucoes { width: 70%; font-size: 13px; left: 10px; }
-        button { right: 10px; top: 10px; padding: 8px 12px; }
+    button {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 500px) {
+    .vaga {
+        width: 60vw;
+        height: 85vw;
     }
 
-    @media (max-width: 500px) {
-        .vaga { width: 60vw; height: 85vw; }
-        .carro { width: 38vw; height: 52vw; }
-        .instrucoes { width: 84%; font-size: 12px; left: 8px; top: 8px; }
+    .carro {
+        width: 38vw;
+        height: 52vw;
     }
+
+    .instrucoes {
+        width: 84%;
+        left: 8px;
+        top: 8px;
+    }
+}
 </style>
 </head>
 
 <body>
 
-    <button id="saida" onclick="window.location.href='index.html'">Sair do jogo</button>
+<button id="saida" onclick="window.location.href='index.html'">Sair do jogo</button>
 
-    <div class="instrucoes">
-        <h3>Instruções</h3>
-        <p>Use as setas do teclado para mover o carro ativo. Estacione na vaga correta.</p>
+<div class="instrucoes">
+    <h3>Instruções</h3>
+    <p>Use as setas do teclado para mover o carro ativo. Estacione na vaga correta.</p>
+</div>
+
+<div id="area-jogo">
+    <div class="centro">
+
+        <div class="vagas-grid" id="vagas-grid">
+            <div class="vaga" data-vaga="1"><p>1</p></div>
+            <div class="vaga" data-vaga="2"><p>2</p></div>
+            <div class="vaga" data-vaga="3"><p>3</p></div>
+            <div class="vaga" data-vaga="4"><p>4</p></div>
+            <div class="vaga" data-vaga="5"><p>5</p></div>
+
+            <div class="vaga" data-vaga="6"><p>6</p></div>
+            <div class="vaga" data-vaga="7"><p>7</p></div>
+            <div class="vaga" data-vaga="8"><p>8</p></div>
+            <div class="vaga" data-vaga="9"><p>9</p></div>
+            <div class="vaga" data-vaga="10"><p>10</p></div>
+        </div>
+
+        <div class="rua"></div>
+
+        <div class="carros-container" id="carros-container">
+            <div class="carro carro1 ativo" id="carro1" style="left: calc(50% - 40px); top: 60%;">
+                <div class="vidro-frente"></div>
+                <div class="vidro-tras"></div>
+                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
+                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
+            </div>
+
+            <div class="carro carro2" id="carro2" style="left: calc(50% - 140px); top: 68%;">
+                <div class="vidro-frente"></div>
+                <div class="vidro-tras"></div>
+                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
+                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
+            </div>
+
+            <div class="carro carro3" id="carro3" style="left: calc(50% + 60px); top: 68%;">
+                <div class="vidro-frente"></div>
+                <div class="vidro-tras"></div>
+                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
+                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
+            </div>
+
+            <div class="carro carro4" id="carro4" style="left: calc(50% - 240px); top: 76%;">
+                <div class="vidro-frente"></div>
+                <div class="vidro-tras"></div>
+                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
+                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
+            </div>
+
+            <div class="carro carro5" id="carro5" style="left: calc(50% + 160px); top: 76%;">
+                <div class="vidro-frente"></div>
+                <div class="vidro-tras"></div>
+                <div class="farois"><div class="farol"></div><div class="farol"></div></div>
+                <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
+            </div>
+        </div>
+
     </div>
-
-    <div id="area-jogo">
-        <div class="centro">
-
-            <!-- fileira superior de vagas -->
-            <div class="vagas-grid" id="vagas-grid">
-                <div class="vaga" data-vaga="1"><p>1</p></div>
-                <div class="vaga" data-vaga="2"><p>2</p></div>
-                <div class="vaga" data-vaga="3"><p>3</p></div>
-                <div class="vaga" data-vaga="4"><p>4</p></div>
-                <div class="vaga" data-vaga="5"><p>5</p></div>
-
-                <div class="vaga" data-vaga="6"><p>6</p></div>
-                <div class="vaga" data-vaga="7"><p>7</p></div>
-                <div class="vaga" data-vaga="8"><p>8</p></div>
-                <div class="vaga" data-vaga="9"><p>9</p></div>
-                <div class="vaga" data-vaga="10"><p>10</p></div>
-            </div>
-
-            <!-- rua (visual) -->
-            <div class="rua" aria-hidden="true"></div>
-
-            <!-- Container para os carros (camada separada para facilitar movimento) -->
-            <div class="carros-container" id="carros-container">
-                <div class="carro carro1 ativo" id="carro1" style="left: calc(50% - 40px); top: calc(60%);">
-                    <div class="vidro-frente"></div>
-                    <div class="vidro-tras"></div>
-                    <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                    <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-                </div>
-
-                <div class="carro carro2" id="carro2" style="left: calc(50% - 140px); top: calc(68%);">
-                    <div class="vidro-frente"></div>
-                    <div class="vidro-tras"></div>
-                    <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                    <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-                </div>
-
-                <div class="carro carro3" id="carro3" style="left: calc(50% + 60px); top: calc(68%);">
-                    <div class="vidro-frente"></div>
-                    <div class="vidro-tras"></div>
-                    <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                    <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-                </div>
-
-                <div class="carro carro4" id="carro4" style="left: calc(50% - 240px); top: calc(76%);">
-                    <div class="vidro-frente"></div>
-                    <div class="vidro-tras"></div>
-                    <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                    <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-                </div>
-
-                <div class="carro carro5" id="carro5" style="left: calc(50% + 160px); top: calc(76%);">
-                    <div class="vidro-frente"></div>
-                    <div class="vidro-tras"></div>
-                    <div class="farois"><div class="farol"></div><div class="farol"></div></div>
-                    <div class="lanternas"><div class="lanterna"></div><div class="lanterna"></div></div>
-                </div>
-            </div>
-
-        </div> <!-- .centro -->
-    </div> <!-- #area-jogo -->
+</div>
 
 <script src="game.js"></script>
 </body>
 </html>
-
