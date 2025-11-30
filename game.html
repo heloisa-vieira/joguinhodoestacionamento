@@ -192,6 +192,73 @@
             font-size: 14px;
             color: #374151;
         }
+
+        @media (max-width: 900px) {
+
+    #area-jogo {
+        overflow: auto; /* permite rolar caso precise */
+    }
+
+    .vaga {
+        width: 20vw;     /* diminui proporcional à tela */
+        height: 35vw;
+        border-width: 3px;
+        font-size: 16px;
+    }
+
+    /* reorganiza em grid automático */
+    #area-jogo {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 40px;
+        place-items: center;
+    }
+
+    /* remove as posições fixas das vagas */
+    .vaga {
+        position: relative !important;
+        top: unset !important;
+        left: unset !important;
+    }
+
+    /* carros menores */
+    .carro {
+        width: 16vw;
+        height: 26vw;
+    }
+
+    /* painel de instruções */
+    .instrucoes {
+        width: 70%;
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 14px;
+        top: 5px; 
+    }
+}
+
+@media (max-width: 500px) {
+
+    .vaga {
+        width: 28vw;
+        height: 50vw;
+    }
+
+    .carro {
+        width: 22vw;
+        height: 36vw;
+    }
+
+    .instrucoes {
+        width: 85%;
+    }
+
+}
+
     </style>
 </head>
 
@@ -288,4 +355,5 @@
     <script src="game.js"></script>
 
 </body>
+
 </html>
