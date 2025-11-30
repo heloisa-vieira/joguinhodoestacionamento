@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joguinho do estacionamento</title>
+</head>
+<body>
+    <h1>Desafio do estacionamento</h1>
+    <p>Seja muito bem-vindo ao nosso jogo!</p>
+
+   <div class="instrucoes">
+    <h3>Instruções do Jogo</h3>
+    <p>Use as setas do teclado para mover os carros.</p>
+    <p>Pressione a barra de espaço para trocar de carro.</p>
+    <p>Estacione os carros nas vagas certas!</p>
+</div>
+
+<style>
+    .instrucoes {
+        width: 300px;
+        margin: 20px auto;
+        background-color: #ffffff20; 
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        backdrop-filter: blur(4px);  
+        border: 2px solid #ffffff40;
+        text-align: center; 
+    }
+
+    .instrucoes h3 {
+        margin-top: 0;
+        font-size: 22px;
+        color: yellow;
+    }
+
+    .instrucoes p:last-child {
+        margin-bottom: 0;
+    }
+</style>
+
+     
+    <button id="startBtn">Iniciar Jogo</button>
+    <script>
+        document.getElementById('startBtn').addEventListener('click', function() {
+            window.location.href = 'game.html';
+        });
+    </script>
+    <img src="Design sem nome.png" alt="Imagem de estacionamento">
+
+    
+</body>

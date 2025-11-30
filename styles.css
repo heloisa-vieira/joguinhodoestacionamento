@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    margin: 20px;
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: "Courier New", monospace;
+    color: yellow;
+}
+
+/* Texto */
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff6f6;
+    margin-bottom: 15px;
+    font-family: monospace;
+    text-align: center;
+}
+
+/* Botão */
+button {
+    background-color:  #000523;
+     color: yellow;;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px #999;
+
+    /* CENTRALIZAÇÃO */
+    display: block;
+    margin: 20px auto; /* centraliza */
+    text-align: center;
+}
+.hidden {
+    display: none;
+}
+
+#loading {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
+/* Efeito de clique no botão */
+button:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
+}
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 35%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+ 
