@@ -63,31 +63,8 @@ img {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 600px) {
-
-    body {
-        margin: 10px;
-    }
-
-    h1 {
-        font-size: 22px;
-    }
-
-    p {
-        font-size: 14px;
-    }
-
-    button {
-        width: 80%;      /* botão ocupa mais espaço no celular */
-        font-size: 15px;
-        padding: 12px;
-    }
-
-    img {
-        max-width: 80%;  /* imagem maior no celular */
-    }
-}
 
 
 
  
+
