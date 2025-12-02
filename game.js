@@ -92,9 +92,6 @@ function trocarCarro() {
     document.getElementById(carros[carroAtivo].id).classList.add('ativo');
 }
 
-// ========================================
-// VERIFICAR SE ESTACIONOU
-// ========================================
 function verificarEstacionamento() {
     const carro = carros[carroAtivo];
     const elemento = document.getElementById(carro.id);
@@ -144,3 +141,4 @@ function verificarEstacionamento() {
 
 
 mover();
+
